@@ -1,7 +1,4 @@
 <?php
-/**
- * This is the template for generating CRUD search class of the specified model.
- */
 
 use yii\helpers\StringHelper;
 

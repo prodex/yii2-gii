@@ -9,5 +9,5 @@ namespace prodex\yii\gii\generators\crud;
  */
 class Generator extends \yii\gii\generators\crud\Generator
 {
-
+    public $template = 'basic';
 }

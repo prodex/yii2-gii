@@ -28,7 +28,7 @@ use yii\bootstrap\ActiveForm;
 
 <div class="<?= Inflector::camel2id(StringHelper::basename($generator->modelClass)) ?>-form">
 
-    <?= "<?php " ?>$form = ActiveForm::begin(); ?>
+    <?= "<?php " ?>$form = ActiveForm::begin() ?>
     <?= "<?= \$form->errorSummary(\$model) ?>"?>
 
 <?php foreach ($generator->getColumnNames() as $attribute) {
@@ -40,6 +40,6 @@ use yii\bootstrap\ActiveForm;
         <?= "<?= " ?>Html::submitButton($model->isNewRecord ? <?= $generator->generateString('Добавить') ?> : <?= $generator->generateString('Сохранить') ?>, ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?= "<?php " ?>ActiveForm::end(); ?>
+    <?= "<?php " ?>ActiveForm::end() ?>
 
 </div>

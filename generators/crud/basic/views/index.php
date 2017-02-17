@@ -33,7 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php endif; ?>
 
     <br>
-<?= $generator->enablePjax ? '<?php Pjax::begin(); ?>' : '' ?>
+<?= $generator->enablePjax ? '<?php Pjax::begin() ?>' : '' ?>
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <?= "<?= " ?>GridView::widget([
         'dataProvider' => $dataProvider,

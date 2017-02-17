@@ -20,3 +20,26 @@ or add
 ```
 
 to the require section of your `composer.json` file.
+
+Usage
+-----
+
+Once the extension is installed, simply modify your application configuration as follows:
+
+```php
+return [
+    'bootstrap' => ['gii'],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'generators' => [
+                'crud' => [
+                    'class' => 'prodex\yii\gii\generators\crud\Generator'
+                ]
+            ],
+        ],
+        // ...
+    ],
+    // ...
+];
+```

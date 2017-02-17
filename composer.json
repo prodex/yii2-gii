@@ -1,6 +1,6 @@
 {
     "name": "prodex/yii2-gii",
-    "description": "Yii2 gii",
+    "description": "Yii2 gii templates",
     "homepage": "https://github.com/prodex/yii2-gii",
     "type": "yii2-extension",
     "keywords": ["yii2","extension"],

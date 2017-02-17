@@ -1,0 +1,15 @@
+{
+    "name": "prodex/yii2-gii",
+    "description": "Yii2 gii",
+    "type": "yii2-extension",
+    "keywords": ["yii2","extension"],
+    "license": "BSD-3-Clause",
+    "require": {
+        "yiisoft/yii2": "~2.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "prodex\\gii\\": ""
+        }
+    }
+}

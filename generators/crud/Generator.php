@@ -1,6 +1,6 @@
 <?php
 
-namespace prodex\yii\gii;
+namespace prodex\yii\gii\generators\crud;
 
 /**
  * Generates CRUD
@@ -9,5 +9,5 @@ namespace prodex\yii\gii;
  */
 class Generator extends \yii\gii\generators\crud\Generator
 {
-    
+
 }

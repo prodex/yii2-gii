@@ -35,6 +35,9 @@ return [
             'generators' => [
                 'crud' => [
                     'class' => 'prodex\yii\gii\generators\crud\Generator'
+                ],
+                'model' => [
+                    'class' => 'prodex\yii\gii\generators\model\Generator'
                 ]
             ],
         ],

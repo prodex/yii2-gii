@@ -34,7 +34,7 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
-<?= array_sum($timestampBehaviors) > 0 ? 'use yii\behaviors\TimestampBehavior;': '' ?>
+<?= array_sum($timestampBehaviors) > 0 ? "use yii\\behaviors\\TimestampBehavior;\n": '' ?>
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -114,6 +114,9 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
 <?php endif; ?>
 
 <?php if (array_sum($timestampBehaviors) > 0): ?>
+    /**
+     * @return array
+     */
     public function behaviors()
     {
 <?php if (array_sum($timestampBehaviors) == 2): ?>

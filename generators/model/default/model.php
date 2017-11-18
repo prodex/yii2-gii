@@ -13,19 +13,39 @@
 /* @var $rules string[] list of validation rules */
 /* @var $relations array list of relations (name => relation declaration) */
 
+
+$behaviors = [];
+
+$columns = array_column($tableSchema->columns, 'name');
 $timestampBehaviors = [
-    'createdAtAttribute' => 0,
-    'updatedAtAttribute' => 0,
+    'createdAtAttribute' => ['created_at', 'create_time'],
+    'updatedAtAttribute' => ['updated_at', 'update_time'],
 ];
 
-foreach ($tableSchema->columns as $column) {
-    if ($column->name === 'created_at') {
-        $timestampBehaviors['createdAtAttribute'] = 1;
+$timestampBehaviorsStrings = [];
+$timestampNeeded = false;
+foreach ($timestampBehaviors as $key => $properties) {
+    $propertyExists = false;
+    foreach ($properties as $propertyIndex => $propertyName) {
+        if (in_array($propertyName, $columns, true)) {
+            $timestampNeeded = true;
+            $propertyExists = true;
+            if ($propertyIndex != 0) {
+                $timestampBehaviorsStrings[] = "'{$key}' => '{$propertyName}'";
+                break;
+            }
+        }
     }
 
-    if ($column->name === 'updated_at') {
-        $timestampBehaviors['updatedAtAttribute'] = 1;
+    if (!$propertyExists) {
+        $timestampBehaviorsStrings[] = "'{$key}' => false";
     }
+}
+
+if ($timestampNeeded) {
+    $behaviors['timestamp'] = array_merge([
+        "'class' => TimestampBehavior::class"
+    ], $timestampBehaviorsStrings);
 }
 
 echo "<?php\n";
@@ -34,103 +54,98 @@ echo "<?php\n";
 namespace <?= $generator->ns ?>;
 
 use Yii;
-<?= array_sum($timestampBehaviors) > 0 ? "use yii\\behaviors\\TimestampBehavior;\n": '' ?>
+<?= isset($behaviors['timestamp']) ? "use yii\\behaviors\\TimestampBehavior;\n": '' ?>
 
 /**
- * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
- *
+* This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
+*
 <?php foreach ($tableSchema->columns as $column): ?>
- * @property <?= "{$column->phpType} \${$column->name}\n" ?>
-<?php endforeach; ?>
+    * @property <?= "{$column->phpType} \${$column->name}\n" ?>
+<?php endforeach ?>
 <?php if (!empty($relations)): ?>
- *
-<?php foreach ($relations as $name => $relation): ?>
- * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
-<?php endforeach; ?>
-<?php endif; ?>
- */
+    *
+    <?php foreach ($relations as $name => $relation): ?>
+        * @property <?= $relation[1] . ($relation[2] ? '[]' : '') . ' $' . lcfirst($name) . "\n" ?>
+    <?php endforeach ?>
+<?php endif ?>
+*/
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
-    {
-        return '<?= $generator->generateTableName($tableName) ?>';
-    }
+/**
+* @inheritdoc
+*/
+public static function tableName()
+{
+return '<?= $generator->generateTableName($tableName) ?>';
+}
 <?php if ($generator->db !== 'db'): ?>
 
     /**
-     * @return \yii\db\Connection the database connection used by this AR class.
-     */
+    * @return \yii\db\Connection the database connection used by this AR class.
+    */
     public static function getDb()
     {
-        return Yii::$app->get('<?= $generator->db ?>');
+    return Yii::$app->get('<?= $generator->db ?>');
     }
-<?php endif; ?>
+<?php endif ?>
 
-    /**
-     * @inheritdoc
-     */
-    public function rules()
-    {
-        return [<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
-    }
+/**
+* @inheritdoc
+*/
+public function rules()
+{
+return [<?= "\n            " . implode(",\n            ", $rules) . ",\n        " ?>];
+}
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
+/**
+* @inheritdoc
+*/
+public function attributeLabels()
+{
+return [
 <?php foreach ($labels as $name => $label): ?>
-            <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
-<?php endforeach; ?>
-        ];
-    }
+    <?= "'$name' => " . $generator->generateString($label) . ",\n" ?>
+<?php endforeach ?>
+];
+}
 <?php foreach ($relations as $name => $relation): ?>
 
     /**
-     * @return \yii\db\ActiveQuery
-     */
+    * @return \yii\db\ActiveQuery
+    */
     public function get<?= $name ?>()
     {
-        <?= $relation[0] . "\n" ?>
+    <?= $relation[0] . "\n" ?>
     }
-<?php endforeach; ?>
+<?php endforeach ?>
 <?php if ($queryClassName): ?>
-<?php
+    <?php
     $queryClassFullName = ($generator->ns === $generator->queryNs) ? $queryClassName : '\\' . $generator->queryNs . '\\' . $queryClassName;
     echo "\n";
-?>
+    ?>
     /**
-     * @inheritdoc
-     * @return <?= $queryClassFullName ?> the active query used by this AR class.
-     */
+    * @inheritdoc
+    * @return <?= $queryClassFullName ?> the active query used by this AR class.
+    */
     public static function find()
     {
-        return new <?= $queryClassFullName ?>(get_called_class());
+    return new <?= $queryClassFullName ?>(get_called_class());
     }
-<?php endif; ?>
+<?php endif ?>
 
-<?php if (array_sum($timestampBehaviors) > 0): ?>
+<?php if ($behaviors): ?>
     /**
-     * @return array
-     */
+    * @inheritdoc
+    */
     public function behaviors()
     {
-<?php if (array_sum($timestampBehaviors) == 2): ?>
-        return [TimestampBehavior::className()];
-<?php else: ?>
-        [
-            'class' => TimestampBehavior::className(),
-<?php foreach ($timestampBehaviors as $key => $value): ?>
-    <?php if (!$value): ?>
-    '<?= $key ?>' => false,
-    <?php endif ?>
-<?php endforeach ?>
-    ]
-<?php endif ?>
+    return [
+    <?php foreach ($behaviors as $key => $value): ?>
+        '<?= $key ?>' => [
+        <?= implode(",\n" . str_repeat('    ', 4), $value) . "\n" ?>
+        ],
+    <?php endforeach ?>
+    ];
     }
 <?php endif ?>
 }

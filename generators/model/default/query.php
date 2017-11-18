@@ -25,11 +25,11 @@ echo "<?php\n";
 namespace <?= $generator->queryNs ?>;
 
 /**
-* This is the ActiveQuery class for [[<?= $modelFullClassName ?>]].
-*
-* @see <?= $modelFullClassName . "\n" ?>
-*/
+ * This is the ActiveQuery class for [[<?= $modelFullClassName ?>]].
+ *
+ * @see <?= $modelFullClassName . "\n" ?>
+ */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->queryBaseClass, '\\') . "\n" ?>
 {
-
+   
 }

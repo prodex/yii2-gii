@@ -11,11 +11,12 @@ $urlParams = $generator->generateUrlParams();
 echo "<?php\n";
 ?>
 /**
- * @var yii\web\View $this
+ * @var View $this
  * @var <?= ltrim($generator->modelClass, '\\') ?> $model
 */
 
 use yii\helpers\Html;
+use yii\web\View;
 
 $this->title = <?= $generator->generateString('Изменение') ?>;
 $this->params['breadcrumbs'][] = ['label' => <?= $generator->generateString(Inflector::pluralize(Inflector::camel2words(StringHelper::basename($generator->modelClass)))) ?>, 'url' => ['index']];

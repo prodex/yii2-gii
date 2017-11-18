@@ -3,18 +3,19 @@
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 
-/* @var $this yii\web\View */
+/** @var $this yii\web\View */
 /* @var $generator prodex\yii\gii\generators\crud\Generator */
 
 echo "<?php\n";
 ?>
 /**
-* @var yii\web\View $this
-* @var <?= ltrim($generator->modelClass, '\\') ?> $model
-* @var yii\bootstrap\ActiveForm $form
+ * @var View $this
+ * @var ActiveForm $form
+ * @var <?= ltrim($generator->modelClass, '\\') ?> $model
 */
 
 use yii\helpers\Html;
+use yii\web\View;
 use yii\bootstrap\ActiveForm;
 
 ?>

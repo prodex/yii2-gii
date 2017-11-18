@@ -12,11 +12,13 @@ $nameAttribute = $generator->getNameAttribute();
 echo "<?php\n";
 ?>
 /**
- * @var yii\web\View $this
+ * @var View $this
 <?= !empty($generator->searchModelClass) ? " * @var " . ltrim($generator->searchModelClass, '\\') . " \$searchModel \n" : '' ?>
- * @var yii\data\ActiveDataProvider $dataProvider
+ * @var ActiveDataProvider $dataProvider
 */
 
+use yii\web\View;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\grid\ActionColumn;
 use <?= $generator->indexWidgetType === 'grid' ? "yii\\grid\\GridView" : "yii\\widgets\\ListView" ?>;
@@ -37,7 +39,7 @@ $this->params['breadcrumbs'][] = $this->title;
 <?php if ($generator->indexWidgetType === 'grid'): ?>
     <?= "<?= " ?>GridView::widget([
         'dataProvider' => $dataProvider,
-        <?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n"; ?>
+        <?= !empty($generator->searchModelClass) ? "//'filterModel' => \$searchModel,\n        'columns' => [\n" : "'columns' => [\n" ?>
             ['class' => 'yii\grid\SerialColumn'],
 
 <?php
@@ -63,9 +65,15 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
 ?>
 
             [
-                'class' => ActionColumn::className(),
+                'class' => ActionColumn::class,
                 'visibleButtons' => [
-                    'view' => false
+                    'view' => false,
+                    'update' => function ($model) {
+                        return $model->canUpdate();
+                    }
+                    'delete' => function ($model) {
+                        return $model->canDelete();
+                    }
                 ]
             ]
         ]
@@ -79,5 +87,5 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
         },
     ]) ?>
 <?php endif; ?>
-<?= $generator->enablePjax ? '<?php Pjax::end(); ?>' : '' ?>
+<?= $generator->enablePjax ? '<?php Pjax::end() ?>' : '' ?>
 </div>

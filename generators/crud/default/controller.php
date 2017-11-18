@@ -3,8 +3,7 @@
 use yii\db\ActiveRecordInterface;
 use yii\helpers\StringHelper;
 
-
-/* @var $this yii\web\View */
+/* @var yii\web\View $this */
 /* @var $generator prodex\yii\gii\generators\crud\Generator */
 
 $controllerClass = StringHelper::basename($generator->controllerClass);
@@ -44,19 +43,19 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function behaviors()
     {
-        return [
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
+        $behaviors = parent:behaviors();
+
+        $behaviors['verbs'] = [
+            'class' => VerbFilter::className(),
+            'actions' => [
+                'delete' => ['POST'],
+            ]
         ];
+
+        return $behaviors;
     }
 
     /**
-     * Lists all <?= $modelClass ?> models.
-     *
      * @return mixed
      */
     public function actionIndex()
@@ -81,8 +80,6 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 
     /**
-     * Creates a new <?= $modelClass ?> model.
-     *
      * @return mixed
      */
     public function actionCreate()
@@ -100,8 +97,6 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 
     /**
-     * Updates an existing <?= $modelClass ?> model.
-     *
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      *
      * @return mixed
@@ -121,8 +116,6 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     }
 
     /**
-     * Deletes an existing <?= $modelClass ?> model.
-     *
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      *
      * @return mixed
@@ -130,20 +123,18 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     public function actionDelete(<?= $actionParams ?>)
     {
         $model = $this->findModel(<?= $actionParams ?>);
-        if ($model->delete()) {
-            \Yii::$app->session->setFlash('success', 'Элемент удален.');
+        if ($model->remove()) {
+            \Yii::$app->session->setFlash('success', 'Удаление прошло успешно.');
         }
 
         return $this->redirect(['index']);
     }
 
     /**
-     * Finds the <?= $modelClass ?> model based on its primary key value.
-     *
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      *
-     * @return <?=                   $modelClass ?> the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
+     * @return <?=                   $modelClass ?>
+     * @throws NotFoundHttpException
      */
     protected function findModel(<?= $actionParams ?>)
     {
@@ -158,7 +149,8 @@ if (count($pks) === 1) {
     $condition = '[' . implode(', ', $condition) . ']';
 }
 ?>
-        if (($model = <?= $modelClass ?>::findOne(<?= $condition ?>)) !== null) {
+        $model = <?= $modelClass ?>::findOne(<?= $condition ?>);
+        if ($model) {
             return $model;
         }
 

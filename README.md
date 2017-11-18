@@ -10,13 +10,13 @@ The preferred way to install this extension is through [composer](http://getcomp
 Either run
 
 ```
-composer require --prefer-dist prodex/yii2-gii "~1.0.0"
+composer require --prefer-dist prodex/yii2-gii "^1.0"
 ```
 
 or add
 
 ```
-"prodex/yii2-gii": "~1.0.0"
+"prodex/yii2-gii": "^1.0"
 ```
 
 to the require section of your `composer.json` file.
@@ -34,7 +34,8 @@ return [
             'class' => 'yii\gii\Module',
             'generators' => [
                 'crud' => [
-                    'class' => 'prodex\yii\gii\generators\crud\Generator'
+                    'class' => 'prodex\yii\gii\generators\crud\Generator',
+                    'excludeColumnsFromForm' => ['created_at', 'create_time', 'updated_at', 'update_time']
                 ],
                 'model' => [
                     'class' => 'prodex\yii\gii\generators\model\Generator'

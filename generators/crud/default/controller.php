@@ -43,7 +43,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
      */
     public function behaviors()
     {
-        $behaviors = parent:behaviors();
+        $behaviors = parent::behaviors();
 
         $behaviors['verbs'] = [
             'class' => VerbFilter::className(),
@@ -133,7 +133,7 @@ class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->bas
     /**
      * <?= implode("\n     * ", $actionParamComments) . "\n" ?>
      *
-     * @return <?=                   $modelClass ?>
+     * @return <?=                   $modelClass ?> 
      * @throws NotFoundHttpException
      */
     protected function findModel(<?= $actionParams ?>)

@@ -70,7 +70,7 @@ if (($tableSchema = $generator->getTableSchema()) === false) {
                     'view' => false,
                     'update' => function ($model) {
                         return $model->canUpdate();
-                    }
+                    },
                     'delete' => function ($model) {
                         return $model->canDelete();
                     }

@@ -2,14 +2,12 @@
 
 namespace prodex\yii\gii\generators\crud;
 
-use \yii\gii\generators\crud\Generator;
-
 /**
  * Generates CRUD
  *
- * @see Generator
+ * @see \yii\gii\generators\crud\Generator
  */
-class Generator extends Generator
+class Generator extends \yii\gii\generators\crud\Generator
 {
     /**
      * @var string[]
